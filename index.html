@@ -723,7 +723,7 @@ function pg(id,btn){
   document.getElementById('page-'+id)?.classList.add('active');
   if(btn)btn.classList.add('active');
   closeSB();window.scrollTo({top:0,behavior:'smooth'});
-  const lmap={empresas:loadEmp,funcionarios:loadFunc,cargos:loadCg,ambientes:loadAmb,epis:loadEpi,treinamentos:loadTr,aso:loadASO,os:loadOS,laudos:loadLD,acidentes:loadAC,contratos:loadCT,financeiro:loadFin,vencimentos:loadVenc};
+  const lmap={empresas:loadEmp,funcionarios:loadFunc,cargos:loadCg,ambientes:loadAmb,epis:loadEpi,treinamentos:loadTr,aso:loadASO,os:loadOS,laudos:loadLD,acidentes:loadAC,contratos:loadCT,financeiro:loadFin,vencimentos:loadVenc,usuarios:loadUsuarios,logs:loadLogs};
   if(lmap[id])lmap[id]();
 }
 function stb(id,btn){
@@ -1453,20 +1453,12 @@ async function loadLogs() {
 window.del = delSeguro;
 
 
-// Override showApp to load profile
+// Patch showApp to load profile after login
 const _origShowApp = showApp;
-function showApp(){
+showApp = function(){
   _origShowApp();
-  loadUserProfile();
-}
-
-// Override pg to load correct page
-const _origPg = pg;
-function pg(id, btn){
-  _origPg(id, btn);
-  if(id==='usuarios')loadUsuarios();
-  if(id==='logs')loadLogs();
-}
+  setTimeout(loadUserProfile, 500);
+};
 
 init();
 </script>
